@@ -5,10 +5,12 @@
     <title>Temperature Hot</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
             background: url(images/bg-image.jpg) no-repeat;
@@ -22,33 +24,55 @@
     <div class="container">
         <form class="col-md-6 m-auto py-5">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <input id="enter-city-name" type="text" class="form-control"
+                    placeholder="Enter a location for Weather ...">
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-danger">Search</button>
+                    <button id="search" type="button"
+                        class="btn btn-danger">Search</button>
                 </div>
             </div>
         </form>
         <div class="weather-status text-white text-center">
-            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <img id="icon" src="https://openweathermap.org/img/wn/02d@2x.png"
+                alt="">
             <h1 id="city-name">Dhaka</h1>
             <h3><span id="temperature">38.06</span>&deg;C</h3>
             <h1 class="lead">Clouds</h1>
         </div>
     </div>
 
+
+    <!-- java script code -->
     <script>
-        fetch('http://api.openweathermap.org/data/2.5/weather?id=524901&lang=fr&appid=615ec292095fe7149a25193258655973')
-        .then(res => res.json())
-        .then(data => {
-            const temperature = data.main.temp;
-            document.getElementById('temperature').innerText = temperature;
+        const apiKey = '615ec292095fe7149a25193258655973';
+        const apiBase = 'https://api.openweathermap.org/data/2.5/weather';
+
+        const getWeatherData = city => {
+            const url = `${apiBase}?q=${city}&units=metric&appid=${apiKey}`;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => uddateUI(data)
+        }
+
+        const updateUI = data => {
             const cityName = data.name;
             document.getElementById('city-name').innerText = cityName;
-            // const leadCondition = data.weather.main;
-            // document.getElementById('lead').innerText = leadCondition;
-            console.log(data);
+            const temperature = data.main.temp;
+            document.getElementById('temperature').innerText = temperature;
+            const leadCondition = data.weather[0].main;
+            document.getElementById('lead').innerText = leadCondition;
+            document.getElementById('icon').setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+            document.getElementById('city').value = "";
 
-        })
+        }
+
+        // document.getElementById('search').addEventListener('click', function () {
+        //     const cityName = document.getElementById('enter-city-name').value;
+                // const leadCondition = data.weather.main;
+                // document.getElementById('lead').innerText = leadCondition;
+                // console.log(data);
+
+            // })
     </script>
 
 </body>
